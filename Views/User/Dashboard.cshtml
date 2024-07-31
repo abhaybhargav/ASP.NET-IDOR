@@ -1,0 +1,59 @@
+@model List<SensitiveInfo>
+@{
+    ViewData["Title"] = "Dashboard";
+    var isSecure = ViewBag.IsSecureMode;
+}
+
+<h2>Welcome to Your @(isSecure ? "Secure" : "Insecure") Dashboard</h2>
+
+<div class="mb-3">
+    <a href="@Url.Action("Dashboard", "User")" class="btn btn-primary @(!isSecure ? "active" : "")">Insecure Dashboard</a>
+    <a href="@Url.Action("SecureDashboard", "User")" class="btn btn-primary @(isSecure ? "active" : "")">Secure Dashboard</a>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Add Sensitive Information</h3>
+        <form action="/User/AddSensitiveInfo" method="post">
+            <div class="form-group">
+                <label for="info">Sensitive Information</label>
+                <textarea class="form-control" id="info" name="info" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Information</button>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <h3>Your Sensitive Information</h3>
+        @if (Model != null && Model.Any())
+        {
+            <ul class="list-group">
+                @foreach (var info in Model)
+                {
+                    <li class="list-group-item">
+                        <a href="@Url.Action("ViewSensitiveInfo", "User", new { id = info.Id })">View Info #@info.Id</a>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>You haven't added any sensitive information yet.</p>
+        }
+    </div>
+</div>
+
+<div class="mt-4">
+    <div class="alert @(isSecure ? "alert-success" : "alert-warning")">
+        <h4 class="alert-heading">@(isSecure ? "Secure Mode" : "Insecure Mode")</h4>
+        <p>
+            @if (isSecure)
+            {
+                <span>In secure mode, users can only access their own sensitive information.</span>
+            }
+            else
+            {
+                <span>In insecure mode, users can access any sensitive information by ID, demonstrating the IDOR vulnerability.</span>
+            }
+        </p>
+    </div>
+</div>

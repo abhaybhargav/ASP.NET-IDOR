@@ -1,0 +1,20 @@
+@{
+    Layout = "_Layout";
+}
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to IDOR Demo App</h1>
+    <p>This application demonstrates Insecure Direct Object Reference (IDOR) vulnerabilities.</p>
+    <p>You can switch between secure and insecure modes to see how proper access control prevents IDOR attacks.</p>
+    
+<p>
+    Please <a asp-controller="User" asp-action="Login">login</a> or <a asp-controller="User" asp-action="Signup">sign up</a> to get started.
+</p>
+<p>
+    If you are logged in, visit your <a asp-controller="User" asp-action="Dashboard">Dashboard</a> to manage your sensitive information.
+</p>
+</div>
